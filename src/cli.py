@@ -1,9 +1,10 @@
 import sys
 import os
-import src.ra as ra
-import src.util.caching as ch
+from src import this_os
+from src.web import ra
+from src.web import lawphil as lp
+from src.util import caching as ch
 from src.util.history import log_search_history, get_search_history_dir
-import src.lawphil as lp
 from dotenv import load_dotenv
 
 cache_dir = ch.get_cache_dir()
@@ -17,37 +18,38 @@ def print_welcome_message():
 
 # do not close app until user types /q
 def command_window():
-    os.system('clear')
+    clear_screen()
     print_welcome_message()
     while True:
-        command = input("lexsearch=# ")
+        command = input("lexsearch >> ")
         if command == "/q":
+            clear_screen()
             break
         elif command == "/h":
             print_help_message()
         elif command == "/c":
-            os.system("clear")
+            clear_screen()
         elif command == "/v":
             print_version()
         elif command == "/k":
             show_history()
-        # check if command is a search command
         elif command.startswith("/s"):
-            # check if search term is valid
-            if len(command.split()) == 2:
-                search_term = command.split()[1]
-                search_type = lp.get_type(search_term)
-                ra_number = lp.get_search_term(search_term)
-                log_search_history(search_term)
-                if search_type == "ra":
-                    ra.process_ra(ra_number, cache_dir)
-                elif search_type == "gr":
-                    print("GR search is not yet implemented.")
-                else:
-                    print("Invalid search term.")
-                    
+            validate_search(command)        
         else:
             print("Invalid command. Type /h to show the help message.")
+
+def validate_search(command):
+    if len(command.split()) == 2:
+        search_term = command.split()[1]
+        search_type = lp.get_type(search_term)
+        ra_number = lp.get_search_term(search_term)
+        log_search_history(search_term)
+        if search_type == "ra":
+            ra.process_ra(ra_number, cache_dir)
+        elif search_type == "gr":
+            print("GR search is not yet implemented.")
+        else:
+            print("Invalid search term.")
 
 def print_help_message():
     
@@ -94,14 +96,9 @@ def show_history():
         print("Search history is empty.")
         return
 
-    # print the last 10 search terms in the search history
-    # each entry should be preceded by an number from [1] to [10]
-    # the user can enter the number to search again
-
     # get the last 10 search terms
     last_ten = history_list[-10:]
 
-    # print the last 10 search terms
     for i in range(len(last_ten)):
         print(f"[{i+1}] {last_ten[i]}")
 
@@ -130,3 +127,10 @@ def show_history():
                 print("Invalid index.")
         else:
             print("Invalid index.")
+
+def clear_screen():
+    print(this_os)
+    if this_os == "nt":
+        os.system("cls")
+    else:
+        os.system("clear")
