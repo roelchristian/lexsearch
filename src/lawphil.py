@@ -1,7 +1,7 @@
 import requests
 import re
 import datetime as dt
-from src.history import log_search_history
+from src.util.history import log_search_history
 
 def get_type(search_term):
     '''

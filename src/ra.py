@@ -1,4 +1,4 @@
-import src.caching as ch
+import src.util.caching as ch
 import src.lawphil as lp
 import requests
 import re

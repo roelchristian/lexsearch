@@ -1,10 +1,10 @@
 import sys
 import os
 import src.ra as ra
-import src.caching as ch
+import src.util.caching as ch
+from src.util.history import log_search_history, get_search_history_dir
 import src.lawphil as lp
 from dotenv import load_dotenv
-from src.history import log_search_history, get_search_history_dir
 
 cache_dir = ch.get_cache_dir()
 load_dotenv()

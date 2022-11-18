@@ -1,5 +1,4 @@
-
-import src.caching as ch
+import src.util.caching as ch
 import src.cli as cli
 
 cache_dir = ch.get_cache_dir()
