@@ -1,5 +1,6 @@
 import os
 import datetime as dt
+from src import this_os
 
 def get_search_history_dir():
     app_folder = os.path.join(os.path.expanduser('~'), '.lexsearch')
@@ -19,6 +20,3 @@ def log_search_history(search_term):
     # append the search term to the history file
     with open(history_file, 'a') as f:
         f.write(timestamp + " " + search_term + '\n')
-
-
-

@@ -1,5 +1,5 @@
-import src.util.caching as ch
-import src.lawphil as lp
+from src.util import caching as ch
+from src import lawphil as lp
 import requests
 import re
 import sys
@@ -30,7 +30,7 @@ def process_ra(ra_number, cache_dir):
 
             # get title
             title = soup.title.text
-            print(title)
+            print(f"Showing details for: {title}")
 
     # get section to print
     section_to_print = input("Enter section to print or press 0 to print all: ")
