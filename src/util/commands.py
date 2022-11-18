@@ -22,7 +22,6 @@ def validate_search(command):
         search_term = command.split()[1]
         search_type = lp.get_type(search_term)
         ra_number = lp.get_search_term(search_term)
-        log_search_history(search_term)
         if search_type == "ra":
             ra.process_ra(ra_number, cache_dir)
         elif search_type == "gr":
