@@ -1,10 +1,13 @@
 import src.util.caching as ch
-import src.cli as cli
+import src.ui as ui
+from src import cache_dir
 
-cache_dir = ch.get_cache_dir()
-ch.clean_up_cache_dir(cache_dir)
+def main():
+    ch.clean_up_cache_dir(cache_dir)
+    ui.command_window()
 
-cli.command_window()
+if __name__ == "__main__":
+    main()
 
 
 

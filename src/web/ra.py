@@ -1,5 +1,5 @@
 from src.util import caching as ch
-from src import lawphil as lp
+from src.web import lawphil as lp
 import requests
 import re
 import sys
