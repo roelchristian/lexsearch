@@ -55,18 +55,18 @@ def get_year(ra_number):
     url = construct_url(ra_number, year)
     
     # if url is valid, return the year
-    # if not valid add 1 to year and try again until a valid url is found
-    # if no valid url is found, raise a ValueError
+    # if not valid add 1 to year and try again until a valid url is found but stop at the next threshold or if year is current year
+    # if no valid url is found, return None
+    # return the year if valid url is found
 
-    while is_valid_url(url) == False:
-        year = int(year) + 1
-        url = construct_url(ra_number, year)
-        current_year = dt.datetime.now().year
-        if year > current_year or year == next_threshold:
-            print("Invalid RA number. Please check your search term and try again.")
-            break
-    return year
-
+    while True:
+        if is_valid_url(url):
+            return year
+        else:
+            year += 1
+            if year == next_threshold or year == dt.datetime.now().year:
+                return None
+            url = construct_url(ra_number, year)
                 
 
 def construct_url(ra_number, year):

@@ -9,6 +9,10 @@ def process_ra(ra_number, cache_dir):
 
     year = lp.get_year(ra_number)
 
+    if year is None:
+        print("Invalid RA number.")
+        return
+
     cache_file_name = f"ra_{ra_number}_{year}"
 
     # check if the RA number is in the cache
