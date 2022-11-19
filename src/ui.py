@@ -1,4 +1,4 @@
-from src.util.commands import clear_screen, validate_search
+from src.util.commands import clear_screen, parse_search, perform_search
 from src.util.commands import print_help_message, print_version
 from src.util.history import show_history
 
@@ -27,6 +27,8 @@ def command_window():
         elif command == "/h":
             show_history()
         elif command.startswith("/s"):
-            validate_search(command)        
+            search_type, search_term = parse_search(command)
+            perform_search(search_type, search_term)
+                
         else:
             print("Invalid command. Type /? to show the help message.")

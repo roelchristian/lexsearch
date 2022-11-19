@@ -1,11 +1,11 @@
 from src import this_os
 import os
-from src.util.history import log_search_history, get_search_history_dir
 from src.web import ra
 from src.web import lawphil as lp
 from src import cache_dir
 import sys
 from dotenv import load_dotenv
+from src import __version__
 
 load_dotenv()
 
@@ -17,17 +17,31 @@ def clear_screen():
         os.system("clear")
 
 
-def validate_search(command):
+def parse_search(command):
     if len(command.split()) == 2:
         search_term = command.split()[1]
         search_type = lp.get_type(search_term)
-        ra_number = lp.get_search_term(search_term)
-        if search_type == "ra":
-            ra.process_ra(ra_number, cache_dir)
-        elif search_type == "gr":
-            print("GR search is not yet implemented.")
+        if not search_type:
+            ra_number = None
         else:
-            print("Invalid search term.")
+            ra_number = lp.get_search_term(search_term) 
+        return search_type, ra_number
+    else:
+        if len(command.split()) == 1:
+            print("Please enter a search term.")
+            
+        elif len(command.split()) > 2:
+            print("Invalid search term. Type /? to show the help message.")
+    
+        return None, None
+
+def perform_search(search_type, search_term):
+    if search_type == "ra":
+        ra.process_ra(search_term, cache_dir)
+    elif search_type == "gr":
+        print("GR search not implemented yet.")
+    elif search_type is None or search_term is None:
+        return
 
 def print_help_message():
     
@@ -52,5 +66,5 @@ def print_help_message():
     """)
 
 def print_version():
-    print(f"LexSearch version {os.getenv('VERSION')}")
+    print(f"LexSearch version {__version__}")
     print(f"Python version {sys.version}")

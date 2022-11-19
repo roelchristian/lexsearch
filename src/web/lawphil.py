@@ -4,11 +4,8 @@ import datetime as dt
 from src.util.history import log_search_history
 
 def get_type(search_term):
-    '''
-    If the search term starts with "RA" return "Republic Act"
-    If the search term starts with "GR" return "SC Decision"
-    '''
 
+    search_term = search_term.upper()
     log_search_history(search_term)
 
     if search_term.startswith("RA"):
@@ -16,7 +13,7 @@ def get_type(search_term):
     elif search_term.startswith("GR"):
         return "gr"
     else:
-        print("Invalid search term.")
+        print("Invalid search term. Type /? to show the help message.")
         return None
 
 def get_search_term(search_term):
