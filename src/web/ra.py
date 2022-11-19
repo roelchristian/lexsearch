@@ -4,6 +4,7 @@ import requests
 import re
 import sys
 from bs4 import BeautifulSoup
+from src.util.term import clear_screen
 
 def process_ra(ra_number, cache_dir):
 
@@ -36,22 +37,53 @@ def process_ra(ra_number, cache_dir):
             title = soup.title.text
             print(f"Showing details for: {title}")
 
-    # get section to print
-    section_to_print = input("Enter section to print or press 0 to print all: ")
-
-    # check if the user wants to print all sections
-    if section_to_print == '0':
-        # print all sections
-        for section in ra_text:
-            print(section + ' ' + ra_text[section])
-
-    else:
-        # validate if the section to print is valid, ie is a number
-        # if not valid, prompt the user to enter a valid section or type 0 to print all or type q to quit
-        while not re.match(r'\d+', section_to_print):
-            section_to_print = input("Enter a valid section to print or press 0 to print all or press q to quit: ")
-            if section_to_print == 'q':
-                sys.exit()
+    # get section to print from user
+    # or print all sections by pressing 0 or Enter
+    # or go to return to main menu by pressing q
+    clear_screen()
+    while True:
         
-        # print the section
-        print(ra_text[section_to_print])
+        sec_count = len(ra_text)-2
+
+        # print how many sections are available
+        print("\n[RA VIEW]\n")
+        print(f"There are {sec_count} sections in this RA.")
+
+        section_number = input("Enter section number to print,\nor 0 to print all sections,\nor /q to return to main menu): ")
+
+        if section_number == '/q':
+            clear_screen()
+            return
+
+        elif section_number == '0' or section_number == '':
+            print("")
+            # print all key value pairs in the dict except where key is "Title" or "Date Saved"
+            for key, value in ra_text.items():
+                if key != "Title" and key != "Date Saved":
+                    print(f"[{key}]\t{value}")
+                
+            print("\n[END OF SELECTION]")
+
+
+        elif section_number.isnumeric():
+            # check if section number is less than or equal to the number of sections
+            if int(section_number) <= sec_count:
+                print("")
+                section_number = f"Section {section_number}"
+                print(ra_text[section_number])
+                print("\n[END OF SELECTION]")
+            else:
+                print("Invalid section number.")
+
+
+        else:
+            print("Invalid input.")
+
+        # Wait for user to press Enter before looping again
+        input("\nPress Enter to continue...")
+        clear_screen()
+        
+        
+
+
+        

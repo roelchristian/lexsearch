@@ -80,11 +80,8 @@ def is_valid_url(url):
     else:
         return False
 
-def get_title(soup):
-    title = soup.find("h1").text
-    return title
-
 def get_sections(soup):
+    print(soup)
     '''
     A section is one or more paragraphs beginning with:
     The word section or sec. followed by a space and a number, case insensitive.
@@ -138,18 +135,19 @@ def get_sections(soup):
 
     # add the last section to the dict
     section_dict[section_number] = section_text
-
-    # Get the last item in the dict
+    
+    #get last item in dict
     last_item = list(section_dict.items())[-1]
 
-    # Remove anything after the words "Approved:" or "Approved," in the last item
-    last_item = re.sub(r'approved:.*|approved,.*', '', last_item[1], re.IGNORECASE)
+    # Remove everything after the string "Approved" in the last section (including the string "Approved")
+    head, sep, tail = last_item[1].partition('Approved')
+    section_dict[last_item[0]] = head
 
-    # Replace the last item in the dict with the modified last item
-    section_dict[last_item[0]] = last_item
+    # rename keys from '1' to 'Section 1'
+    section_dict = {f'Section {key}': value for key, value in section_dict.items()}
 
+    # Add key, value pair for the title, date saved and url of the soup
+    section_dict['Title'] = soup.title.text
+    section_dict['Date Saved'] = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     return section_dict
-
-
-           
