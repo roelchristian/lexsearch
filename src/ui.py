@@ -1,6 +1,7 @@
-from src.util.commands import clear_screen, parse_search, perform_search
+from src.util.commands import parse_search, perform_search
 from src.util.commands import print_help_message, print_version
 from src.util.history import show_history
+from src.util.term import clear_screen
 
 
 def print_welcome_message():

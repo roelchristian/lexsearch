@@ -9,14 +9,6 @@ from src import __version__
 
 load_dotenv()
 
-def clear_screen():
-    print(this_os)
-    if this_os == "nt":
-        os.system("cls")
-    else:
-        os.system("clear")
-
-
 def parse_search(command):
     if len(command.split()) == 2:
         search_term = command.split()[1]
