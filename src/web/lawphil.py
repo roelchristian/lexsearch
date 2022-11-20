@@ -146,6 +146,13 @@ def get_sections(soup):
     # rename keys from '1' to 'Section 1'
     section_dict = {f'Section {key}': value for key, value in section_dict.items()}
 
+    # remove first sentence from each section
+    for key, value in section_dict.items():
+        section_dict[key] = re.sub(r'^.*?\.\s', '', value)
+    
+    print(section_dict)
+
+
     # Add key, value pair for the title, date saved and url of the soup
     section_dict['Title'] = soup.title.text
     section_dict['Date Saved'] = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")

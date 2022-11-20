@@ -5,6 +5,7 @@ import re
 import sys
 from bs4 import BeautifulSoup
 from src.util.term import clear_screen
+from src.util.download import download_file, parse_download_request
 
 def process_ra(ra_number, cache_dir):
 
@@ -49,7 +50,7 @@ def process_ra(ra_number, cache_dir):
         print("\n[RA VIEW]\n")
         print(f"There are {sec_count} sections in this RA.")
 
-        section_number = input("Enter section number to print,\nor 0 to print all sections,\nor /q to return to main menu): ")
+        section_number = input("Enter section number to print,\nor 0 to print all sections,\nor /q to return to main menu\nor /d to download the text of this statute): ")
 
         if section_number == '/q':
             clear_screen()
@@ -60,7 +61,7 @@ def process_ra(ra_number, cache_dir):
             # print all key value pairs in the dict except where key is "Title" or "Date Saved"
             for key, value in ra_text.items():
                 if key != "Title" and key != "Date Saved":
-                    print(f"[{key}]\t{value}")
+                    print(f"[{key}]\t{value}\n")
                 
             print("\n[END OF SELECTION]")
 
@@ -70,11 +71,20 @@ def process_ra(ra_number, cache_dir):
             if int(section_number) <= sec_count:
                 print("")
                 section_number = f"Section {section_number}"
-                print(ra_text[section_number])
+                print(f"[{section_number}]\t{ra_text[section_number]}")
                 print("\n[END OF SELECTION]")
             else:
                 print("Invalid section number.")
 
+        elif section_number == '/d':
+            download_mode, output_file_format = parse_download_request()
+            if download_mode == "dict":
+                download_file(ra_text, "dict", output_file_format)
+            elif download_mode == "soup":
+                download_file(soup, "soup", output_file_format)
+            else:
+                print("Invalid download mode.")
+                return
 
         else:
             print("Invalid input.")
