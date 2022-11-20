@@ -6,7 +6,7 @@ The application allows you to view your queries in the terminal or save them int
 
 # How to use
 
-Download and clone this repository. Then, run the following command:
+Download or clone this repository. Then, run the following command:
 
     python3 lexsearch.py
 
