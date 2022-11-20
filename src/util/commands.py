@@ -21,8 +21,17 @@ def parse_search(command):
     else:
         if len(command.split()) == 1:
             print("Please enter a search term.")
-            
-        elif len(command.split()) > 2:
+        elif len(command.split()) == 3:
+            # check if search term is like RA 7610 or GR 123456
+            search_term = command.split()[1] + command.split()[2]
+            search_type = lp.get_type(search_term)
+            if not search_type:
+                ra_number = None
+            else:
+                ra_number = lp.get_search_term(search_term)
+            return search_type, ra_number
+
+        elif len(command.split()) > 3:
             print("Invalid search term. Type /? to show the help message.")
     
         return None, None
