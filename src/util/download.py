@@ -1,6 +1,16 @@
 import settings
 import datetime as dt
 import os
+import subprocess
+import platform
+
+def open_file(file_path):
+    if platform.system() == 'Darwin':       # macOS
+        subprocess.call(('open', file_path))
+    elif platform.system() == 'Windows':    # Windows
+        os.startfile(file_path)
+    else:                                   # linux variants
+        subprocess.call(('xdg-open', file_path))
 
 def get_download_directory():
     if settings.DOWNLOAD_LOCATION == "DEFAULT":
@@ -60,6 +70,14 @@ def download_file(object_to_download, download_mode, output_format):
                         f.write(object_to_download.get_text())
 
     print ("Downloaded to " + os.path.join(download_location, file_name))
+    
+    # Ask user if they want to open the file
+    open_file_prompt = input("Open file? (y/N): ")
+    if open_file_prompt == "y" or open_file_prompt == "Y":
+        # Open file in default application
+        open_file(os.path.join(download_location, file_name))
+
+
 
 def parse_download_request():
     '''
@@ -69,8 +87,8 @@ def parse_download_request():
     # [1] json, [2] xml, [3] csv, [4] html, [5] txt
     # default is txt
     
-    print("Please select format of downloaded file:")
-    print("[1] json [2] xml [3] csv [4] html [5] txt")
+    print("\nPlease select format of downloaded file:")
+    print("[1] json [2] xml [3] csv [4] html [5] txt\n")
 
     formats = { "1" : "json", "2" : "xml", "3" : "csv", "4" : "html", "5" : "txt" }
 

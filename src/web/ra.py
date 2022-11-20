@@ -20,12 +20,12 @@ def process_ra(ra_number, cache_dir):
 
     cache_file_name = f"ra_{ra_number}_{year}"
     soup_cache_file_name = f"ra_{ra_number}_soup"
+    is_in_cache_val = ch.is_in_cache(ra_number)
 
     # check if the RA number is in the cache
-    if ch.is_in_cache(cache_file_name):
+    if is_in_cache_val:
         ra_text = ch.read_cache_file(cache_file_name, cache_dir)
         ra_text_soup = ch.read_soup_from_cache(soup_cache_file_name, cache_dir)
-        is_from_cache = True
 
     else:
         url = lp.construct_url(ra_number, year)
@@ -88,7 +88,7 @@ def process_ra(ra_number, cache_dir):
             if download_mode == "dict":
                 download_file(ra_text, "dict", output_file_format)
             elif download_mode == "soup":
-                if is_from_cache == True:
+                if is_in_cache_val == True:
                     download_file(ra_text_soup, "soup", output_file_format)
                 else:
                     download_file(soup, "soup", output_file_format)
