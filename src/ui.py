@@ -3,6 +3,7 @@ from src.util.commands import print_help_message, print_version
 from src.util.history import show_history
 from src.util.term import clear_screen
 from src.util.settings import display_settings
+from src.web.lawphil import check_connection
 
 
 def print_welcome_message():
@@ -29,6 +30,9 @@ def command_window():
         elif command == "/h":
             show_history()
         elif command.startswith("/s"):
+            if check_connection() == False:
+                print("Error: Cannot connect to lawphil.net")
+                continue
             search_type, search_term = parse_search(command)
             perform_search(search_type, search_term)
         elif command.startswith("/x"):
