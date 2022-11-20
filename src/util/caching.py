@@ -41,6 +41,34 @@ def create_cache_file(dict, filename, cache_dir):
     with gzip.open(cache_file_path, 'wb') as f:
         f.write(json_string.encode('utf-8'))
 
+
+def cache_soup(soup, ra_number, cache_dir):
+    '''
+    This function caches a BeautifulSoup object by zippping it into a gzip file and storing it in the cache directory.
+    '''
+
+    # get the cache file path
+    cache_file_path = os.path.join(cache_dir, 'ra_'+ ra_number + '_soup.cache')
+
+    # compress the BeautifulSoup object
+    with gzip.open(cache_file_path, 'wb') as f:
+        f.write(soup.encode('utf-8'))
+
+def read_soup_from_cache(file_name, cache_dir):
+    '''
+    This function reads a BeautifulSoup object from the cache directory.
+    '''
+
+    # get the cache file path
+    cache_file_path = os.path.join(cache_dir, file_name + '.cache')
+
+    # read the compressed BeautifulSoup object
+    with gzip.open(cache_file_path, 'rb') as f:
+        soup = f.read()
+
+    return soup
+    
+
 def read_cache_file(filename, cache_dir):
     '''
     This function reads a cache file from the specified cache directory and returns the deserialized dict.

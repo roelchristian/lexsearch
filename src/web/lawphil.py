@@ -81,7 +81,6 @@ def is_valid_url(url):
         return False
 
 def get_sections(soup):
-    print(soup)
     '''
     A section is one or more paragraphs beginning with:
     The word section or sec. followed by a space and a number, case insensitive.

@@ -6,8 +6,11 @@ import sys
 from bs4 import BeautifulSoup
 from src.util.term import clear_screen
 from src.util.download import download_file, parse_download_request
+from src.util.caching import cache_soup
 
 def process_ra(ra_number, cache_dir):
+
+    print("Searching for RA " + ra_number + "...")
 
     year = lp.get_year(ra_number)
 
@@ -16,11 +19,13 @@ def process_ra(ra_number, cache_dir):
         return
 
     cache_file_name = f"ra_{ra_number}_{year}"
+    soup_cache_file_name = f"ra_{ra_number}_soup"
 
     # check if the RA number is in the cache
     if ch.is_in_cache(cache_file_name):
         ra_text = ch.read_cache_file(cache_file_name, cache_dir)
-
+        ra_text_soup = ch.read_soup_from_cache(soup_cache_file_name, cache_dir)
+        is_from_cache = True
 
     else:
         url = lp.construct_url(ra_number, year)
@@ -30,6 +35,8 @@ def process_ra(ra_number, cache_dir):
             get_url = requests.get(url)
             soup = BeautifulSoup(get_url.text, 'html.parser')
             soup_size = sys.getsizeof(soup)
+            cache_soup(soup, ra_number, cache_dir)
+            
             print(f"Downloaded {soup_size} bytes from {url}.")
             ra_text = lp.get_sections(soup)
             ch.create_cache_file(ra_text, cache_file_name, cache_dir)
@@ -81,7 +88,10 @@ def process_ra(ra_number, cache_dir):
             if download_mode == "dict":
                 download_file(ra_text, "dict", output_file_format)
             elif download_mode == "soup":
-                download_file(soup, "soup", output_file_format)
+                if is_from_cache == True:
+                    download_file(ra_text_soup, "soup", output_file_format)
+                else:
+                    download_file(soup, "soup", output_file_format)
             else:
                 print("Invalid download mode.")
                 return
