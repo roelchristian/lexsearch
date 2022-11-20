@@ -8,6 +8,12 @@ from src.util.term import clear_screen
 from src.util.download import download_file, parse_download_request
 from src.util.caching import cache_soup
 
+metadata_fields = [
+    "Title",
+    "Date Saved",
+    "Long Title"
+]
+
 def process_ra(ra_number, cache_dir):
 
     print("Searching for RA " + ra_number + "...")
@@ -51,7 +57,7 @@ def process_ra(ra_number, cache_dir):
     clear_screen()
     while True:
         
-        sec_count = len(ra_text)-2
+        sec_count = len(ra_text)-len(metadata_fields)
 
         # print how many sections are available
         print("\n[RA VIEW]\n")
@@ -67,7 +73,7 @@ def process_ra(ra_number, cache_dir):
             print("")
             # print all key value pairs in the dict except where key is "Title" or "Date Saved"
             for key, value in ra_text.items():
-                if key != "Title" and key != "Date Saved":
+                if key not in metadata_fields:
                     print(f"[{key}]\n{value}\n")
                 
             print("\n[END OF SELECTION]")
