@@ -6,7 +6,13 @@ The application allows you to view your queries in the terminal or save them int
 
 # How to use
 
-Download or clone this repository. Then, run the following command:
+Download or clone this repository. You must have Python 3.x installed in your machine to run this application.
+
+The available code is still in development. No pre-complied binaries are available yet. To try this out, install the dependencies first by running:
+
+    pip install -r requirements.txt
+
+Then, open Lex Search by running:
 
     python3 lexsearch.py
 
