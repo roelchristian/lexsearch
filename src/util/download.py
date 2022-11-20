@@ -25,7 +25,7 @@ def get_download_directory():
             return os.path.join(os.path.expanduser("~"), "Downloads")
 
 download_modes = {
-    "dict" : ["json", "xml", "csv"],
+    "dict" : ["json", "xml", "csv", "yaml"],
     "soup" : ["html", "txt"]
 }
 
@@ -51,7 +51,7 @@ def download_file(object_to_download, download_mode, output_format):
                 elif output_format == "xml":
                     import xmltodict
                     with open(os.path.join(download_location, file_name), "w") as f:
-                        statute = {"root" : object_to_download}
+                        statute = {"RA" : object_to_download}
                         f.write(xmltodict.unparse(statute, pretty=True))
                 elif output_format == "csv":
                     import csv
@@ -59,6 +59,12 @@ def download_file(object_to_download, download_mode, output_format):
                         writer = csv.writer(f)
                         for key, value in object_to_download.items():
                             writer.writerow([key, value])
+                elif output_format == "yaml":
+                    import yaml
+                    with open(os.path.join(download_location, file_name), "w") as f:
+                        statute = {"RA" : object_to_download}
+                        # do not sort keys
+                        yaml.dump(statute, f, sort_keys=False)
 
             elif download_mode == "soup":
                 if output_format == "html":
@@ -90,9 +96,17 @@ def parse_download_request():
     # default is txt
     
     print("\nPlease select format of downloaded file:")
-    print("[1] json [2] xml [3] csv [4] html [5] txt\n")
+    print("Default: txt\n")
+    print("[0] txt [1] json [2] xml [3] csv [4] yaml [5] html\n")
 
-    formats = { "1" : "json", "2" : "xml", "3" : "csv", "4" : "html", "5" : "txt" }
+    formats = {
+        "0" : "txt",
+        "1" : "json",
+        "2" : "xml",
+        "3" : "csv",
+        "4" : "yaml",
+        "5" : "html"
+    }
 
     file_format = input("Enter number or press Enter for default: ")
 
