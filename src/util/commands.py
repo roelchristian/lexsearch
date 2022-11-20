@@ -46,13 +46,13 @@ def print_help_message():
     The following commands are available:
 
     /q to quit
-    /h to display the help message
+    /? to display the help message
     /c to clear the screen
     /s to search for a statute or a decision
         * This should be followed by the search term.
         * Valid search terms start with "RA" or "GR"
         * For example, to search for RA 7610, type "/s RA7610"
-    /k to display the search history
+    /h to display the search history
     /x to display the settings
     /v to display the version number
     """)

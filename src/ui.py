@@ -2,6 +2,7 @@ from src.util.commands import parse_search, perform_search
 from src.util.commands import print_help_message, print_version
 from src.util.history import show_history
 from src.util.term import clear_screen
+from src.util.settings import display_settings
 
 
 def print_welcome_message():
@@ -30,6 +31,8 @@ def command_window():
         elif command.startswith("/s"):
             search_type, search_term = parse_search(command)
             perform_search(search_type, search_term)
+        elif command.startswith("/x"):
+            display_settings()
                 
         else:
             print("Invalid command. Type /? to show the help message.")
