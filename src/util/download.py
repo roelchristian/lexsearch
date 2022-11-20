@@ -63,7 +63,9 @@ def download_file(object_to_download, download_mode, output_format):
             elif download_mode == "soup":
                 if output_format == "html":
                     with open(os.path.join(download_location, file_name), "w") as f:
-                        f.write(str(object_to_download))
+                        # replace /n in html with <br>
+                        f.write(str(object_to_download).replace("/n", "<br>"))
+
                 elif output_format == "txt":
                     with open(os.path.join(download_location, file_name), "w") as f:
                         # convert soup to text

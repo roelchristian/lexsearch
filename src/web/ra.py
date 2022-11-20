@@ -20,10 +20,10 @@ def process_ra(ra_number, cache_dir):
 
     cache_file_name = f"ra_{ra_number}_{year}"
     soup_cache_file_name = f"ra_{ra_number}_soup"
-    is_in_cache_val = ch.is_in_cache(ra_number)
+    is_in_cache_val = ch.is_in_cache(ra_number, year)
 
     # check if the RA number is in the cache
-    if is_in_cache_val:
+    if is_in_cache_val == True:
         ra_text = ch.read_cache_file(cache_file_name, cache_dir)
         ra_text_soup = ch.read_soup_from_cache(soup_cache_file_name, cache_dir)
 
@@ -68,7 +68,7 @@ def process_ra(ra_number, cache_dir):
             # print all key value pairs in the dict except where key is "Title" or "Date Saved"
             for key, value in ra_text.items():
                 if key != "Title" and key != "Date Saved":
-                    print(f"[{key}]\t{value}\n")
+                    print(f"[{key}]\n{value}\n")
                 
             print("\n[END OF SELECTION]")
 
@@ -78,7 +78,7 @@ def process_ra(ra_number, cache_dir):
             if int(section_number) <= sec_count:
                 print("")
                 section_number = f"Section {section_number}"
-                print(f"[{section_number}]\t{ra_text[section_number]}")
+                print(f"[{section_number}]\n{ra_text[section_number]}")
                 print("\n[END OF SELECTION]")
             else:
                 print("Invalid section number.")
