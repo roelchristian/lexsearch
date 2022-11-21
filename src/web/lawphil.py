@@ -160,6 +160,7 @@ def get_sections(soup):
         section_dict[key] = re.sub(r'^.*?\.\s', '', value)
     
     # split the value of each key into a dict with the following keys: 'section_number', 'section_text', 'section_title'
+    sections = []
     for key, value in section_dict.items():
         section_number = re.search(r'\d+', key).group()
         # section title is the first sentence of the section, everything before the first period excluding the period
@@ -167,11 +168,18 @@ def get_sections(soup):
         section_title = re.search(r'(^.*?)(?:\.)', value).group()
         # section text is the rest of the section starting from the first capital letter
         section_text = re.search(r'([A-Z].*)', value).group()
+        
+        if section_text == section_title:
+            section_title = key
         section_dict[key] = {'section_number': section_number, 'section_title': section_title, 'section_text': section_text}
-
-    print (section_dict)
+        # append the dict to the sections list
+        sections.append(section_dict[key])
+    
+    sections = {'section': sections}
+    section_dict = {'sections': sections}
 
     # Add key, value pair for the title, date saved and url of the soup
+    # append to start of sections_dict
     section_dict['Title'] = soup.title.text
     section_dict['Date Saved'] = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     # long title is in meta tag with name="description"
