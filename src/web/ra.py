@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from src.util.term import clear_screen
 from src.util.download import download_file, parse_download_request
 from src.util.caching import cache_soup
-from src.web.requests import check_connection
+from src.web.req import check_connection
 
 metadata_fields = [
     "Title",
@@ -40,7 +40,7 @@ def process_ra(ra_number, cache_dir):
 
         url = lp.construct_url(ra_number, year, "lawphil")
 
-        if lp.is_valid_url(url):
+        if lp.is_valid_url(url) == True:
             print("Reading from lawphil...")
             get_url = requests.get(url)
             soup = BeautifulSoup(get_url.text, 'html.parser')
@@ -49,6 +49,7 @@ def process_ra(ra_number, cache_dir):
             
             print(f"Downloaded {soup_size} bytes from {url}.")
             ra_text = lp.get_sections(soup)
+
             ch.create_cache_file(ra_text, cache_file_name, cache_dir)
             # get title
             title = soup.title.text
@@ -59,9 +60,9 @@ def process_ra(ra_number, cache_dir):
     # or go to return to main menu by pressing q
     clear_screen()
     while True:
-        
-        sec_count = len(ra_text)-len(metadata_fields)
+        ra_text_sections = ra_text["sections"]["section"]
 
+        sec_count = len(ra_text_sections)
         # print how many sections are available
         print("\n[RA VIEW]\n")
         print(f"There are {sec_count} sections in this RA.")
@@ -74,10 +75,19 @@ def process_ra(ra_number, cache_dir):
 
         elif section_number == '0' or section_number == '':
             print("")
-            # print all key value pairs in the dict except where key is "Title" or "Date Saved"
-            for key, value in ra_text.items():
-                if key not in metadata_fields:
-                    print(f"[{key}]\n{value}\n")
+            # print all sections
+            for section in ra_text_sections:
+                section_number_print = section["section_number"]
+                if section["section_title"] == f"Section {section_number_print}":
+                    section_title_print = None
+                else:
+                    section_title_print = section["section_title"]
+                section_text_print = section["section_text"]
+
+                if section_title_print is not None:
+                    print(f"[Section {section_number_print}] {section_title_print}\n{section_text_print}\n")
+                else:
+                    print(f"[Section {section_number_print}]\n{section_text_print}\n")
                 
             print("\n[END OF SELECTION]")
 
@@ -86,8 +96,20 @@ def process_ra(ra_number, cache_dir):
             # check if section number is less than or equal to the number of sections
             if int(section_number) <= sec_count:
                 print("")
-                section_number = f"Section {section_number}"
-                print(f"[{section_number}]\n{ra_text[section_number]}")
+                # print the section
+                section = ra_text_sections[int(section_number) - 1]
+                section_number_print = section["section_number"]
+                if section["section_title"] == f"Section {section_number_print}":
+                    section_title_print = None
+                else:
+                    section_title_print = section["section_title"]
+                section_text_print = section["section_text"]
+
+                if section_title_print is not None:
+                    print(f"[Section {section_number_print}] {section_title_print}\n{section_text_print}\n")
+                else:
+                    print(f"[Section {section_number_print}]\n{section_text_print}\n")
+                    
                 print("\n[END OF SELECTION]")
             else:
                 print("Invalid section number.")
