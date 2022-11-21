@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from src.util.term import clear_screen
 from src.util.download import download_file, parse_download_request
 from src.util.caching import cache_soup
+from src.web.requests import check_connection
 
 metadata_fields = [
     "Title",
@@ -18,15 +19,9 @@ def process_ra(ra_number, cache_dir):
 
     print("Searching for RA " + ra_number + "...")
 
-    year = lp.get_year(ra_number)
-
-    if year is None:
-        print("Invalid RA number.")
-        return
-
-    cache_file_name = f"ra_{ra_number}_{year}"
+    cache_file_name = f"ra_{ra_number}"
     soup_cache_file_name = f"ra_{ra_number}_soup"
-    is_in_cache_val = ch.is_in_cache(ra_number, year)
+    is_in_cache_val = ch.is_in_cache(ra_number)
 
     # check if the RA number is in the cache
     if is_in_cache_val == True:
@@ -34,7 +29,16 @@ def process_ra(ra_number, cache_dir):
         ra_text_soup = ch.read_soup_from_cache(soup_cache_file_name, cache_dir)
 
     else:
-        url = lp.construct_url(ra_number, year)
+        year = lp.get_year(ra_number)
+
+        if year is None:
+            print("Invalid RA number.")
+            return
+
+        if check_connection("lawphil") == False:
+            return
+
+        url = lp.construct_url(ra_number, year, "lawphil")
 
         if lp.is_valid_url(url):
             print("Reading from lawphil...")
@@ -46,7 +50,6 @@ def process_ra(ra_number, cache_dir):
             print(f"Downloaded {soup_size} bytes from {url}.")
             ra_text = lp.get_sections(soup)
             ch.create_cache_file(ra_text, cache_file_name, cache_dir)
-
             # get title
             title = soup.title.text
             print(f"Showing details for: {title}")
