@@ -113,14 +113,14 @@ def read_cache_file(filename, cache_dir):
 
     return dict
 
-def is_in_cache(ra_number, year):
+def is_in_cache(ra_number):
     '''
     This function checks if an RA number is in the cache.
     '''
 
     # get the cache directory
     cache_dir = get_cache_dir()
-    cache_file_name = f"ra_{ra_number}_{year}"
+    cache_file_name = f"ra_{ra_number}"
 
     # check if the cache file exists
     if os.path.exists(os.path.join(cache_dir, cache_file_name + '.cache')):
