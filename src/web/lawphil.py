@@ -3,17 +3,7 @@ import re
 import datetime as dt
 from src.util.history import log_search_history
 import sys
-
-def check_connection():
-    '''
-    This function will check if lawphil.net is reachable before a certain response timeout.
-    '''
-    try:
-        r = requests.get("https://lawphil.net", timeout=3)
-        return True
-    except requests.exceptions.ConnectionError or requests.exceptions.Timeout:
-        print("Error: Connection timed out.")
-        return False
+from src.web.req import sources
 
 def get_type(search_term):
 
@@ -64,7 +54,7 @@ def get_year(ra_number):
         next_threshold = year_thresholds[year_index - 1]
 
     # construct a url from the year and ra number
-    url = construct_url(ra_number, year)
+    url = construct_url(ra_number, year, "lawphil")
     
     # if url is valid, return the year
     # if not valid add 1 to year and try again until a valid url is found but stop at the next threshold or if year is current year
@@ -78,12 +68,20 @@ def get_year(ra_number):
             year += 1
             if year == next_threshold or year == dt.datetime.now().year:
                 return None
-            url = construct_url(ra_number, year)
+            url = construct_url(ra_number, year, "lawphil")
                 
 
-def construct_url(ra_number, year):
-    url = f"https://lawphil.net/statutes/repacts/ra{year}/ra_{ra_number}_{year}.html"
-    return url
+def construct_url(ra_number, year, source):
+
+    if source not in sources:
+        print("Invalid source.")
+        return None
+    elif source == "lawphil":
+        url = f"https://lawphil.net/statutes/repacts/ra{year}/ra_{ra_number}_{year}.html"
+        return url
+    else:
+        print("Selected source is not yet supported.")
+        return None
 
 def is_valid_url(url):
     r = requests.get(url)
@@ -182,5 +180,4 @@ def get_sections(soup):
     long_title = re.sub(r'^Republic Acts -\s', '', long_title)
     section_dict['Long Title'] = long_title
 
-    sys.exit(0)
     return section_dict

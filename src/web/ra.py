@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from src.util.term import clear_screen
 from src.util.download import download_file, parse_download_request
 from src.util.caching import cache_soup
-from src.web.requests import check_connection
+from src.web.req import check_connection
 
 metadata_fields = [
     "Title",
@@ -40,7 +40,7 @@ def process_ra(ra_number, cache_dir):
 
         url = lp.construct_url(ra_number, year, "lawphil")
 
-        if lp.is_valid_url(url):
+        if lp.is_valid_url(url) == True:
             print("Reading from lawphil...")
             get_url = requests.get(url)
             soup = BeautifulSoup(get_url.text, 'html.parser')
@@ -49,6 +49,7 @@ def process_ra(ra_number, cache_dir):
             
             print(f"Downloaded {soup_size} bytes from {url}.")
             ra_text = lp.get_sections(soup)
+
             ch.create_cache_file(ra_text, cache_file_name, cache_dir)
             # get title
             title = soup.title.text
