@@ -10,9 +10,11 @@ from src.util.caching import cache_soup
 from src.web.req import check_connection
 
 metadata_fields = [
-    "Title",
-    "Date Saved",
-    "Long Title"
+    "ra_title",
+    "date_saved",
+    "long_title",
+    "congress",
+    "session"
 ]
 
 def process_ra(ra_number, cache_dir):
@@ -109,7 +111,7 @@ def process_ra(ra_number, cache_dir):
                     print(f"[Section {section_number_print}] {section_title_print}\n{section_text_print}\n")
                 else:
                     print(f"[Section {section_number_print}]\n{section_text_print}\n")
-                    
+
                 print("\n[END OF SELECTION]")
             else:
                 print("Invalid section number.")

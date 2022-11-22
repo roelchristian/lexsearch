@@ -4,6 +4,7 @@ import datetime as dt
 from src.util.history import log_search_history
 import sys
 from src.web.req import sources
+from number_parser import parse_ordinal
 
 def get_type(search_term):
 
@@ -139,8 +140,10 @@ def get_sections(soup):
             # reset the section text
             section_text = ''
 
-        # add the paragraph text to the section text
-        section_text += paragraph_text
+        # add the paragraph text to the section text and preserve the line breaks
+        section_text += paragraph_text + '\r\r'
+
+    #TODO: Find a way to strip \r\r from the last item when appending
 
     # add the last section to the dict
     section_dict[section_number] = section_text
@@ -168,7 +171,7 @@ def get_sections(soup):
         section_title = re.search(r'(^.*?)(?:\.)', value).group()
         # section text is the rest of the section starting from the first capital letter
         section_text = re.search(r'([A-Z].*)', value).group()
-        
+
         if section_text == section_title:
             section_title = key
         section_dict[key] = {'section_number': section_number, 'section_title': section_title, 'section_text': section_text}
@@ -180,12 +183,36 @@ def get_sections(soup):
 
     # Add key, value pair for the title, date saved and url of the soup
     # append to start of sections_dict
-    section_dict['Title'] = soup.title.text
-    section_dict['Date Saved'] = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    section_dict['ra_title'] = soup.title.text
+    section_dict['date_saved'] = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
     # long title is in meta tag with name="description"
     long_title = soup.find('meta', attrs={'name': 'description'})['content']
     # remove "Republic Acts -" from the long title
     long_title = re.sub(r'^Republic Acts -\s', '', long_title)
-    section_dict['Long Title'] = long_title
+    section_dict['long_title'] = long_title
+
+    # congress is after "<hr color="#000080" size="-1">
+    # get the text of the next three paragraphs
+    congress = soup.find('hr', attrs={'color': '#000080', 'size': '-1'}).find_next_siblings('p', limit=2)
+    # get the text of the paragraphs
+    congress = [paragraph.text for paragraph in congress]
+    congress = ' '.join(congress)
+    congress = congress.strip()
+
+    # get all words up to substring "Congress" including "Congress"
+    congress_val = re.search(r'(.+?)(?:Congress)', congress).group()
+    # get all words from congress_val except the last word and trim for trailing whitespace
+    congress_ordinal = re.sub(r'\s\w+$', '', congress_val).strip()
+    # subtract congress_val from congress to get the congress number
+    session = congress.replace(congress_val, '')
+    # get all words up to substring "Session" including "Session"
+    session = re.search(r'(.+?)(?:Session)', session).group()
+
+    # create dicts for congress and session
+    congress_dict = {'congress_long_name': congress_val, 'congress_number': parse_ordinal(congress_ordinal)}
+
+    section_dict['congress'] = congress_dict
+    section_dict['session'] = session
 
     return section_dict

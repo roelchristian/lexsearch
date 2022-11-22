@@ -34,7 +34,7 @@ def download_file(object_to_download, download_mode, output_format):
     Downloads a file to the user's Downloads folder.
     :param object_to_download: The object to download.
     :param download_mode: The download mode. Either "dict" or "soup".
-    :param output_format: The output format. Either "json", "xml", "csv", "html", or "txt".
+    :param output_format: The output format. Either "json", "xml", "csv", "html", "yaml", or "txt".
     '''
 
     download_location = get_download_directory()
@@ -51,7 +51,9 @@ def download_file(object_to_download, download_mode, output_format):
                 elif output_format == "xml":
                     import xmltodict
                     with open(os.path.join(download_location, file_name), "w") as f:
-                        statute = {"RA" : object_to_download}
+
+                        statute = {"lex_search_content" : object_to_download}
+                        
                         f.write(xmltodict.unparse(statute, pretty=True))
                 elif output_format == "csv":
                     import csv
@@ -62,8 +64,9 @@ def download_file(object_to_download, download_mode, output_format):
                 elif output_format == "yaml":
                     import yaml
                     with open(os.path.join(download_location, file_name), "w") as f:
-                        statute = {"RA" : object_to_download}
-                        # do not sort keys
+                    
+                        statute = {"lex_search_content" : object_to_download}
+
                         yaml.dump(statute, f, sort_keys=False)
 
             elif download_mode == "soup":
@@ -96,17 +99,13 @@ def parse_download_request():
     # default is txt
     
     print("\nPlease select format of downloaded file:")
-    print("Default: txt\n")
-    print("[0] txt [1] json [2] xml [3] csv [4] yaml [5] html\n")
 
-    formats = {
-        "0" : "txt",
-        "1" : "json",
-        "2" : "xml",
-        "3" : "csv",
-        "4" : "yaml",
-        "5" : "html"
-    }
+    formats = { "1" : "json", "2" : "xml", "3" : "csv", "4" : "yaml", "5" : "html", "6" : "txt" }
+    # print in a single line
+    formats_str = ""
+    for key, value in formats.items():
+        formats_str += "[" + key + "] " + value + " "
+    print(formats_str)
 
     file_format = input("Enter number or press Enter for default: ")
 
