@@ -2,9 +2,9 @@ import requests
 import re
 import datetime as dt
 from src.util.history import log_search_history
-import sys
 from src.web.req import sources
 from number_parser import parse_ordinal
+import collections
 
 def get_type(search_term):
 
@@ -169,6 +169,9 @@ def get_sections(soup):
         # section title is the first sentence of the section, everything before the first period excluding the period
         
         section_title = re.search(r'(^.*?)(?:\.)', value).group()
+        # remove full stop from section title if section title ends with a full stop
+        if section_title.endswith('.'):
+            section_title = section_title[:-1]
         # section text is the rest of the section starting from the first capital letter
         section_text = re.search(r'([A-Z].*)', value).group()
 
@@ -180,22 +183,42 @@ def get_sections(soup):
     
     sections = {'section': sections}
     section_dict = {'sections': sections}
+    metadata_dict = get_metadata_from_soup(soup)
 
-    # Add key, value pair for the title, date saved and url of the soup
-    # append to start of sections_dict
-    section_dict['ra_title'] = soup.title.text
-    section_dict['date_saved'] = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # create new key 'metadata' and assign the metadata dict to it
+    section_dict['metadata'] = metadata_dict
 
-    # long title is in meta tag with name="description"
+    # order the keys alphabetically
+    section_dict = collections.OrderedDict(sorted(section_dict.items()))
+
+
+    return section_dict
+
+
+def get_metadata_from_soup(soup):
+
+
+    metadata = {}
+    metadata['date_saved'] = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    #RA DETAILS
+
     long_title = soup.find('meta', attrs={'name': 'description'})['content']
-    # remove "Republic Acts -" from the long title
     long_title = re.sub(r'^Republic Acts -\s', '', long_title)
-    section_dict['long_title'] = long_title
+    ra_title = soup.title.text.strip()
+    serial_number = re.search(r'\d+', ra_title).group()
+    ra_details = {
+        'serial_number': serial_number,
+        'ra_title': ra_title,
+        'long_title': long_title
+    }
 
-    # congress is after "<hr color="#000080" size="-1">
-    # get the text of the next three paragraphs
+    metadata['ra_details'] = ra_details
+
+
+    # CONGRESS DETAILS
+
     congress = soup.find('hr', attrs={'color': '#000080', 'size': '-1'}).find_next_siblings('p', limit=2)
-    # get the text of the paragraphs
     congress = [paragraph.text for paragraph in congress]
     congress = ' '.join(congress)
     congress = congress.strip()
@@ -206,13 +229,26 @@ def get_sections(soup):
     congress_ordinal = re.sub(r'\s\w+$', '', congress_val).strip()
     # subtract congress_val from congress to get the congress number
     session = congress.replace(congress_val, '')
-    # get all words up to substring "Session" including "Session"
-    session = re.search(r'(.+?)(?:Session)', session).group()
+ 
+    print(congress)
+    print(type(congress)) 
+    # check if not valid session, ie not containing the string "Session"
+    if not re.search(r'Session', session):
+        # set session to None
+        session = None
+
+    if session is not None and re.search(r'Session', session):
+        session = re.search(r'(.+?)(?:Session)', session).group()
+        session_ordinal = re.sub(r'(Regular|Extraordinary|Special)\sSession', '', session).strip()
+        session_ordinal = parse_ordinal(session_ordinal)
+        session_type = re.search(r'(Regular|Extraordinary|Special)\sSession', session).group()
+    else:
+        session_ordinal = None
+        session_type = None
 
     # create dicts for congress and session
-    congress_dict = {'congress_long_name': congress_val, 'congress_number': parse_ordinal(congress_ordinal)}
+    session_dict = {'session_long_name': session, 'session_type': session_type, 'session_number': session_ordinal}
+    congress_dict = {'congress_long_name': congress_val, 'congress_number': parse_ordinal(congress_ordinal), 'session' : session_dict}
+    metadata['congress'] = congress_dict
 
-    section_dict['congress'] = congress_dict
-    section_dict['session'] = session
-
-    return section_dict
+    return metadata
