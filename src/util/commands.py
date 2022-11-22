@@ -60,7 +60,7 @@ def print_help_message():
     /s to search for a statute or a decision
         * This should be followed by the search term.
         * Valid search terms start with "RA" or "GR"
-        * For example, to search for RA 7610, type "/s RA7610"
+        * For example, to search for RA 7610, type "/s RA7610 or /s RA 7610"
     /h to display the search history
     /x to display the settings
     /v to display the version number
