@@ -57,7 +57,6 @@ def download_file(object_to_download, output_format):
         with open(os.path.join(download_location, file_name), "w") as f:
             statute = {"lex_search_content" : object_to_download}
             yaml.dump(statute, f, sort_keys=False)
-
     elif output_format == "html":
         with open(os.path.join(download_location, file_name), "w") as f:
             # write html string to file
@@ -82,12 +81,14 @@ def parse_download_request():
     # default is txt
     
     print("\nPlease select format of downloaded file:")
+
     formats = { "1" : "json", "2" : "xml", "3" : "csv", "4" : "yaml", "5" : "html", "6" : "txt" }
     # print in a single line
     formats_str = ""
     for key, value in formats.items():
         formats_str += "[" + key + "] " + value + " "
     print(formats_str)
+
     file_format = input("Enter number or press Enter for default: ")
 
     if file_format == '':
