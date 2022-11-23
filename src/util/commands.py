@@ -1,13 +1,10 @@
 from src import this_os
-import os
 from src.web import ra
 from src.web import lawphil as lp
 from src import cache_dir
 import sys
-from dotenv import load_dotenv
 from src import __version__
 
-load_dotenv()
 
 def parse_search(command):
     if len(command.split()) == 2:
@@ -47,8 +44,8 @@ def perform_search(search_type, search_term):
 def print_help_message():
     
     print(f"""
-    Welcome to LexSearch!
-    Version {os.getenv('VERSION')}
+    Welcome to Lex Search!
+    Version {__version__}
 
     This command line utility allows you to search for Philippine laws and jurisprudence right from your terminal.
 
