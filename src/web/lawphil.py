@@ -5,6 +5,7 @@ from src.util.history import log_search_history
 from src.web.req import sources
 from number_parser import parse_ordinal
 import collections
+from src import __version__
 
 def get_type(search_term):
 
@@ -197,12 +198,19 @@ def get_sections(soup):
 
 def get_metadata_from_soup(soup):
 
-
     metadata = {}
-    metadata['date_saved'] = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # LEX SEARCH METADATA
+    date_saved = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    lex_search_version = __version__
+    lex_search_details = {
+        'date_saved': date_saved,
+        'lex_search_version': lex_search_version
+    }
+    metadata['lex_search_details'] = lex_search_details
+
 
     #RA DETAILS
-
     long_title = soup.find('meta', attrs={'name': 'description'})['content']
     long_title = re.sub(r'^Republic Acts -\s', '', long_title)
     ra_title = soup.title.text.strip()
@@ -229,9 +237,7 @@ def get_metadata_from_soup(soup):
     congress_ordinal = re.sub(r'\s\w+$', '', congress_val).strip()
     # subtract congress_val from congress to get the congress number
     session = congress.replace(congress_val, '')
- 
-    print(congress)
-    print(type(congress)) 
+
     # check if not valid session, ie not containing the string "Session"
     if not re.search(r'Session', session):
         # set session to None

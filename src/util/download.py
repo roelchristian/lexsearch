@@ -3,6 +3,7 @@ import datetime as dt
 import os
 import subprocess
 import platform
+from src.util import render
 
 def open_file(file_path):
     if platform.system() == 'Darwin':       # macOS
@@ -24,16 +25,10 @@ def get_download_directory():
         else:
             return os.path.join(os.path.expanduser("~"), "Downloads")
 
-download_modes = {
-    "dict" : ["json", "xml", "csv", "yaml"],
-    "soup" : ["html", "txt"]
-}
-
-def download_file(object_to_download, download_mode, output_format):
+def download_file(object_to_download, output_format):
     '''
     Downloads a file to the user's Downloads folder.
     :param object_to_download: The object to download.
-    :param download_mode: The download mode. Either "dict" or "soup".
     :param output_format: The output format. Either "json", "xml", "csv", "html", "yaml", or "txt".
     '''
 
@@ -41,41 +36,33 @@ def download_file(object_to_download, download_mode, output_format):
     timestamp = dt.datetime.now().strftime("%Y%m%d%H%M%S")
     file_name = "export_lexsearch_" + timestamp + "." + output_format
 
-    for download_mode in download_modes:
-        if output_format in download_modes[download_mode]:
-            if download_mode == "dict":
-                if output_format == "json":
-                    import json
-                    with open(os.path.join(download_location, file_name), "w") as f:
-                        json.dump(object_to_download, f)
-                elif output_format == "xml":
-                    import xmltodict
-                    with open(os.path.join(download_location, file_name), "w") as f:
-                        statute = {"lex_search_content" : object_to_download}
-                        f.write(xmltodict.unparse(statute, pretty=True))
-                elif output_format == "csv":
-                    import csv
-                    with open(os.path.join(download_location, file_name), "w") as f:
-                        writer = csv.writer(f)
-                        for key, value in object_to_download.items():
-                            writer.writerow([key, value])
-                elif output_format == "yaml":
-                    import yaml
-                    with open(os.path.join(download_location, file_name), "w") as f:
-                        statute = {"lex_search_content" : object_to_download}
-                        yaml.dump(statute, f, sort_keys=False)
+    if output_format == "json":
+        import json
+        with open(os.path.join(download_location, file_name), "w") as f:
+            statute = {"lex_search_content" : object_to_download}
+            json.dump(statute, f)
+    elif output_format == "xml":
+        import xmltodict
+        with open(os.path.join(download_location, file_name), "w") as f:
+            statute = {"lex_search_content" : object_to_download}
+            f.write(xmltodict.unparse(statute, pretty=True))
+    elif output_format == "csv":
+        import csv
+        with open(os.path.join(download_location, file_name), "w") as f:
+            writer = csv.writer(f)
+            for key, value in object_to_download.items():
+                writer.writerow([key, value])
+    elif output_format == "yaml":
+        import yaml
+        with open(os.path.join(download_location, file_name), "w") as f:
+            statute = {"lex_search_content" : object_to_download}
+            yaml.dump(statute, f, sort_keys=False)
 
-            elif download_mode == "soup":
-                if output_format == "html":
-                    with open(os.path.join(download_location, file_name), "w") as f:
-                        # replace /n in html with <br>
-                        f.write(str(object_to_download).replace("/n", "<br>"))
-
-                elif output_format == "txt":
-                    with open(os.path.join(download_location, file_name), "w") as f:
-                        # convert soup to text
-                        f.write(object_to_download.get_text())
-
+    elif output_format == "html":
+        with open(os.path.join(download_location, file_name), "w") as f:
+            # write html string to file
+            f.write(render.render_html_from_json(object_to_download))
+            
     print ("Downloaded to " + os.path.join(download_location, file_name))
     
     # Ask user if they want to open the file
@@ -110,12 +97,4 @@ def parse_download_request():
     else: 
         file_format_value = formats[file_format]
     
-    if file_format_value is not None:
-        if file_format_value in download_modes["dict"]:
-            download_mode = "dict"
-        elif file_format_value in download_modes["soup"]:
-            download_mode = "soup"
-    else:
-        download_mode = None
-    
-    return download_mode, file_format_value
+    return file_format_value

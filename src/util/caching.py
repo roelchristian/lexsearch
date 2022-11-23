@@ -1,8 +1,8 @@
 import os
-import sys
 import json
 import gzip
 import settings
+import shutil
 
 def get_cache_dir():
     '''
@@ -64,10 +64,6 @@ def cache_soup(soup, ra_number, cache_dir):
     # remove script tags
     for script in soup.find_all('script'):
         script.decompose()
-
-    print(soup)
-
-
 
     # compress the BeautifulSoup object
     with gzip.open(cache_file_path, 'wb') as f:
@@ -143,3 +139,16 @@ def clean_up_cache_dir(cache_dir):
         # delete the oldest cache file
         oldest_cache_file = min(cache_files, key=lambda p: os.path.getmtime(os.path.join(cache_dir, p)))
         os.remove(os.path.join(cache_dir, oldest_cache_file))
+
+def save_style_sheet_to_cache():
+    '''
+    This function saves the default style sheet to the cache directory.
+    '''
+    cache_dir = get_cache_dir()
+    cache_file_path = os.path.join(cache_dir, 'ra_style.css')
+
+    # copy static/css/ra_style.css to the cache file path
+    stylesheet = os.path.join(settings.BASE_DIR, 'static/css/style.css')
+    shutil.copyfile(stylesheet, cache_file_path)
+
+    return cache_file_path
