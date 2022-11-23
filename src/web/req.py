@@ -16,7 +16,7 @@ def check_connection(source):
         return False
     url = sources[source]
     try:
-        r = requests.get(url, timeout=3)
+        r = requests.get(url, timeout=3, headers={'User-Agent': 'Mozilla/5.0'})
         return True
     except requests.exceptions.ConnectionError or requests.exceptions.Timeout:
         print("Error: Connection timed out.")
