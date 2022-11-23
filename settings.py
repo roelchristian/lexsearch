@@ -10,3 +10,7 @@ MAX_CACHE_SIZE_MB = 100
 # When changing this setting, make sure to enter the full path to the directory.
 # If the location does not exist or is not a valid directory, the default location will be used.
 DOWNLOAD_LOCATION = "DEFAULT"
+
+# Root directory. Do not change this.
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))

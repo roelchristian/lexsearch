@@ -1,7 +1,6 @@
 from src.util import caching as ch
 from src.web import lawphil as lp
 import requests
-import re
 import sys
 from bs4 import BeautifulSoup
 from src.util.term import clear_screen
@@ -117,18 +116,9 @@ def process_ra(ra_number, cache_dir):
                 print("Invalid section number.")
 
         elif section_number == '/d':
-            download_mode, output_file_format = parse_download_request()
-            if download_mode == "dict":
-                download_file(ra_text, "dict", output_file_format)
-            elif download_mode == "soup":
-                if is_in_cache_val == True:
-                    download_file(ra_text_soup, "soup", output_file_format)
-                else:
-                    download_file(soup, "soup", output_file_format)
-            else:
-                print("Invalid download mode.")
-                return
-
+            output_file_format = parse_download_request()
+            download_file(ra_text, output_file_format)
+            
         else:
             print("Invalid input.")
 

@@ -1,0 +1,7 @@
+# DISCLAIMER
+
+This is a personal project and is not affiliated with the Lawphil Project, the Arellano Law Foundation, Chan Robles and Associates or the Supreme Court of the Philippines. While reasonable efforts have been made to ensure the accuracy of the information sourced by this application, the author or any contributor to this project does not guarantee the accuracy of the information and is not liable for any loss or damage caused by the use of the information obtained through this application.
+
+Any information obtained through this application is not intended to be legal advice and should not be relied upon as such. The author is not a lawyer and is not qualified to give legal advice. If you need legal advice, please consult a lawyer.
+
+The author does not have control over links to third party websites and is not responsible for the content of those websites or any links contained in those websites or any changes or updates to those websites. The author is not responsible for webcasting or any other form of transmission received from any linked website. The author is providing these links to you only as a convenience, and the inclusion of any link does not imply endorsement by the author of this project or any association with its operators.
