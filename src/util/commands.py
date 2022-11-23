@@ -1,4 +1,3 @@
-from src import this_os
 from src.web import ra
 from src.web import lawphil as lp
 from src import cache_dir
@@ -65,4 +64,7 @@ def print_help_message():
 
 def print_version():
     print(f"LexSearch version {__version__}")
-    print(f"Python version {sys.version}")
+    print(f"Python version {sys.version}\n")
+    # print disclaimer.md from root directory
+    with open("disclaimer.md", "r") as f:
+        print(f.read())
