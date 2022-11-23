@@ -1,4 +1,5 @@
 from src import cache_dir, stylesheet_path
+from bs4 import BeautifulSoup
 
 # TODO - rewrite this function to use jinja2
 
@@ -54,10 +55,14 @@ def render_html_from_json(data):
             paragraph = paragraph.encode('ascii', 'xmlcharrefreplace').decode('ascii')
         
             html += f'<p>{paragraph}</p>'
+        
 
-    html += '''
-        </div>
-        </div>
+
+        html += '''
+            </div>
+            </div>
+            '''
+    html += '''        
 
     </div>
     </article>
@@ -67,4 +72,10 @@ def render_html_from_json(data):
     return html
 
 
+def strip_html_tags(html):
+    '''
+    strips html tags from a string
+    '''
+    soup = BeautifulSoup(html, 'html.parser')
+    return soup.get_text()
 
