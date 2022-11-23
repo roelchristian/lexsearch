@@ -7,7 +7,7 @@ from src.web import initialize_sources
 
 
 def print_welcome_message():
-    print("Welcome to LexSearch!")
+    print("Welcome to Lex Search!")
     print("Type /? for help.")
     print("Type /q to quit.")
 
