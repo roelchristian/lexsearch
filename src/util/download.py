@@ -61,6 +61,14 @@ def download_file(object_to_download, output_format):
         with open(os.path.join(download_location, file_name), "w") as f:
             # write html string to file
             f.write(render.render_html_from_json(object_to_download))
+    elif output_format == "txt":
+        with open(os.path.join(download_location, file_name), "w") as f:
+            # write txt string to file
+            html = render.render_html_from_json(object_to_download)
+            # strip html tags
+            text = render.strip_html_tags(html)
+            f.write(text)
+
             
     print ("Downloaded to " + os.path.join(download_location, file_name))
     
