@@ -56,7 +56,7 @@ def download_file(object_to_download, output_format):
         import yaml
         with open(os.path.join(download_location, file_name), "w") as f:
             statute = {"lex_search_content" : object_to_download}
-            yaml.dump(statute, f, sort_keys=False)
+            yaml.dump(statute, f, sort_keys=False, encoding='utf-8')
     elif output_format == "html":
         with open(os.path.join(download_location, file_name), "w") as f:
             # write html string to file
