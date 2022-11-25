@@ -140,15 +140,30 @@ def clean_up_cache_dir(cache_dir):
         oldest_cache_file = min(cache_files, key=lambda p: os.path.getmtime(os.path.join(cache_dir, p)))
         os.remove(os.path.join(cache_dir, oldest_cache_file))
 
-def save_style_sheet_to_cache():
+def stylesheet_cache():
     '''
     This function saves the default style sheet to the cache directory.
     '''
-    cache_dir = get_cache_dir()
-    cache_file_path = os.path.join(cache_dir, 'ra_style.css')
+    app_dir = os.path.expanduser('~/.lexsearch')
+    cache_stylesheet_path = os.path.join(app_dir, 'stylesheet', 'ra_style.css')
 
     # copy static/css/ra_style.css to the cache file path
-    stylesheet = os.path.join(settings.BASE_DIR, 'static/css/style.css')
-    shutil.copyfile(stylesheet, cache_file_path)
+    stylesheet_path = os.path.join(settings.BASE_DIR, 'static/css/style.css')
 
-    return cache_file_path
+    return cache_stylesheet_path, stylesheet_path
+
+def copy_stylesheet(source_sheet, destination_sheet):
+    '''
+    This function copies the default style sheet to the app directory.
+    '''
+
+    # check if there is a "stylesheet" directory in the app directory
+    app_dir = os.path.expanduser('~/.lexsearch')
+    stylesheet_dir = os.path.join(app_dir, 'stylesheet')
+    if not os.path.exists(stylesheet_dir):
+        os.makedirs(stylesheet_dir)
+
+    # copy the style sheet
+    shutil.copyfile(source_sheet, destination_sheet)
+
+    

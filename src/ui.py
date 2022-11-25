@@ -3,8 +3,10 @@ from src.util.commands import print_help_message, print_version
 from src.util.history import show_history
 from src.util.term import clear_screen
 from src.util.settings import display_settings
+from src import cache_stylesheet_path, stylesheet_path
+from src.util.caching import copy_stylesheet
 from src.web import initialize_sources
-
+import shutil
 
 def print_welcome_message():
     print("Welcome to Lex Search!")
@@ -14,11 +16,17 @@ def print_welcome_message():
 # do not close app until user types /q
 def command_window():
     clear_screen()
+
+    copy_stylesheet(stylesheet_path, cache_stylesheet_path)
+
     sources = initialize_sources()
+    
     clear_screen()
+    
     print_welcome_message()
     default_online_source = sources[0]
     print(f"Default online source for this session: {default_online_source}")
+    
     while True:
         command = input("lexsearch >> ")
         if command == "/q":
