@@ -1,12 +1,12 @@
-from src.util.commands import parse_search, perform_search
-from src.util.commands import print_help_message, print_version
-from src.util.history import show_history
-from src.util.term import clear_screen
-from src.util.settings import display_settings
 from src import cache_stylesheet_path, stylesheet_path
 from src.util.caching import copy_stylesheet
+from src.util.commands import (parse_search, perform_search,
+                               print_help_message, print_version)
+from src.util.history import show_history
+from src.util.settings import display_settings
+from src.util.term import clear_screen
 from src.web import initialize_sources
-import shutil
+
 
 def print_welcome_message():
     print("Welcome to Lex Search!")
@@ -26,7 +26,7 @@ def command_window():
     print_welcome_message()
     default_online_source = sources[0]
     print(f"Default online source for this session: {default_online_source}")
-    
+
     while True:
         command = input("lexsearch >> ")
         if command == "/q":

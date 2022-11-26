@@ -1,6 +1,7 @@
-import src.util.caching as ch
 import src.ui as ui
+import src.util.caching as ch
 from src import cache_dir
+
 
 def main():
     ch.clean_up_cache_dir(cache_dir)

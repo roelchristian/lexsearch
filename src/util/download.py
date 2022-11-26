@@ -1,9 +1,11 @@
-import settings
 import datetime as dt
 import os
-import subprocess
 import platform
+import subprocess
+
+import settings
 from src.util import render
+
 
 def open_file(file_path):
     if platform.system() == 'Darwin':       # macOS

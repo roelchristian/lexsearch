@@ -1,11 +1,12 @@
-from src.util import caching as ch
-from src.web import lawphil as lp
-import requests
 import sys
+
+import requests
 from bs4 import BeautifulSoup
-from src.util.term import clear_screen
+
+from src.util import caching as ch
 from src.util.download import download_file, parse_download_request
-from src.util.caching import cache_soup
+from src.util.term import clear_screen
+from src.web import lawphil as lp
 from src.web.req import check_connection
 
 metadata_fields = [

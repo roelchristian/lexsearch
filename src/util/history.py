@@ -1,6 +1,8 @@
-import os
 import datetime as dt
+import os
+
 from src import this_os
+
 
 def get_search_history_dir():
     app_folder = os.path.join(os.path.expanduser('~'), '.lexsearch')

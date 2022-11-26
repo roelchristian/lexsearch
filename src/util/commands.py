@@ -1,8 +1,8 @@
-from src.web import ra
-from src.web import lawphil as lp
-from src import cache_dir
 import sys
-from src import __version__
+
+from src import __version__, cache_dir
+from src.web import lawphil as lp
+from src.web import ra
 
 
 def parse_search(command):
