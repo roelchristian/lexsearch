@@ -42,7 +42,7 @@ def render_html_from_json(data):
     </div>
     <div id = "sections">
     '''
-    print(sections)
+
     for section in sections:
         html += f'''
         <div class="section">
