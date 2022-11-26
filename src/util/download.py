@@ -42,7 +42,7 @@ def download_file(object_to_download, output_format):
         import json
         with open(os.path.join(download_location, file_name), "w") as f:
             statute = {"lex_search_content" : object_to_download}
-            json.dump(statute, f)
+            json.dump(statute, f, indent=4)
     elif output_format == "xml":
         import xmltodict
         with open(os.path.join(download_location, file_name), "w") as f:

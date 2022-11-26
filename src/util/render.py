@@ -10,7 +10,7 @@ def render_html_from_json(data):
     '''
 
     metadata = data['metadata']
-    sections = data['sections']['section']
+    sections = data['sections']
 
     ra_number = metadata['ra_details']['serial_number']
 

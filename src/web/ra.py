@@ -59,7 +59,7 @@ def process_ra(ra_number, cache_dir):
     # or go to return to main menu by pressing q
     clear_screen()
     while True:
-        ra_text_sections = ra_text["sections"]["section"]
+        ra_text_sections = ra_text["sections"]
 
         sec_count = len(ra_text_sections)
         # print how many sections are available
