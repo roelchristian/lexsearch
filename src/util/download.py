@@ -16,17 +16,22 @@ def open_file(file_path):
         subprocess.call(('xdg-open', file_path))
 
 def get_download_directory():
-    if settings.DOWNLOAD_LOCATION == "DEFAULT":
-        return os.path.join(os.path.expanduser("~"), "Downloads")
-    else:
-        if os.path.exists(settings.DOWNLOAD_LOCATION):
-            if os.path.isdir(settings.DOWNLOAD_LOCATION):
-                return settings.DOWNLOAD_LOCATION
-            else:
-                return os.path.join(os.path.expanduser("~"), "Downloads")
-        else:
-            return os.path.join(os.path.expanduser("~"), "Downloads")
+    default_download_directory = os.path.join(os.path.expanduser('~'), 'Downloads', 'lexsearch')
 
+    if settings.DOWNLOAD_LOCATION == "DEFAULT":
+        # create directory if it doesn't exist
+        if not os.path.exists(default_download_directory):
+            os.makedirs(default_download_directory)
+        return default_download_directory
+    else:
+        # create directory if it doesn't exist and is a valid path
+        # otherwise throw an error
+        if os.path.exists(settings.DOWNLOAD_LOCATION):
+            return settings.DOWNLOAD_LOCATION
+        else:
+            raise Exception("DOWNLOAD_LOCATION is not a valid path. Go to settings.py and change DOWNLOAD_LOCATION to a valid path or replace it with 'DEFAULT'.")
+
+        
 def download_file(object_to_download, output_format):
     '''
     Downloads a file to the user's Downloads folder.
