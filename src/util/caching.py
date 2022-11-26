@@ -166,6 +166,9 @@ def copy_stylesheet(source_sheet, destination_sheet):
         os.makedirs(stylesheet_dir)
 
     # copy the style sheet
-    shutil.copyfile(source_sheet, destination_sheet)
-
+    if not os.path.exists(destination_sheet):
+        shutil.copy(source_sheet, destination_sheet)
+    else:
+        os.remove(destination_sheet)
+        shutil.copy(source_sheet, destination_sheet)
     
