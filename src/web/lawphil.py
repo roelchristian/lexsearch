@@ -185,7 +185,7 @@ def get_sections(soup):
         # append the dict to the sections list
         sections.append(section_dict[key])
     
-    sections = {'section': sections}
+    #sections = {'section': sections}
     section_dict = {'sections': sections}
     metadata_dict = get_metadata_from_soup(soup)
 
