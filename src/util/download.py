@@ -31,7 +31,7 @@ def download_file(object_to_download, output_format):
     '''
     Downloads a file to the user's Downloads folder.
     :param object_to_download: The object to download.
-    :param output_format: The output format. Either "json", "xml", "csv", "html", "yaml", or "txt".
+    :param output_format: The output format. Either "json", "xml", "html", "yaml", or "txt".
     '''
 
     download_location = get_download_directory()
@@ -48,12 +48,6 @@ def download_file(object_to_download, output_format):
         with open(os.path.join(download_location, file_name), "w") as f:
             statute = {"lex_search_content" : object_to_download}
             f.write(xmltodict.unparse(statute, pretty=True))
-    elif output_format == "csv":
-        import csv
-        with open(os.path.join(download_location, file_name), "w") as f:
-            writer = csv.writer(f)
-            for key, value in object_to_download.items():
-                writer.writerow([key, value])
     elif output_format == "yaml":
         import yaml
         with open(os.path.join(download_location, file_name), "w") as f:
@@ -87,12 +81,17 @@ def parse_download_request():
     Returns the download mode and output format based on the user's input.
     '''
     # Prompt user for file format from list or enter for default
-    # [1] json, [2] xml, [3] csv, [4] html, [5] txt
+    # [1] json, [2] xml, [3] html, [4] yaml, [5] txt
     # default is txt
     
     print("\nPlease select format of downloaded file:")
 
-    formats = { "1" : "json", "2" : "xml", "3" : "csv", "4" : "yaml", "5" : "html", "6" : "txt" }
+    formats = { "1" : "json",
+                "2" : "xml",
+                "3" : "yaml",
+                "4" : "html",
+                "5" : "txt" }
+
     # print in a single line
     formats_str = ""
     for key, value in formats.items():
