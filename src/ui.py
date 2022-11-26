@@ -4,7 +4,7 @@ from src.util.commands import (parse_search, perform_search,
                                print_help_message, print_version,
                                print_about_info)
 from src.util.history import show_history
-from src.util.settings import display_settings
+from src.util.admin import display_admin_menu
 from src.util.term import clear_screen
 from src.web import initialize_sources
 
@@ -47,7 +47,7 @@ def command_window():
             search_type, search_term = parse_search(command)
             perform_search(search_type, search_term)
         elif command.startswith("/x"):
-            display_settings()
+            display_admin_menu()
                 
         else:
             print("Invalid command. Type /? to show the help message.")
