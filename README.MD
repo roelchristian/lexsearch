@@ -27,18 +27,7 @@ Type `/?` to print the help menu and get a list of commands.
 
 # Version History
 
-## 0.1.0 (beta) - 2022-11-20
-Initial release.
-This version supports:
-- Searching for Republic Acts (RA) from lawphil.net
-- Downloading queries in the following formats:
-    - JSON
-    - CSV
-    - TXT
-    - HTML
-    - XML
-    - YAML
-- Caching searches for faster results
+Go to the project's [version history page](https://github.com/roelchristian/lexsearch/releases) on Github to view the project's complete version history.
 
 # Upcoming Features
 The following features are planned for future releases:
@@ -46,9 +35,11 @@ The following features are planned for future releases:
 - Searching for Presidential Decrees (PD) from lawphil.net
 - Creating a DOM for republic acts for easier parsing and integration with other applications
 
-# License
-This project is licensed under the MIT License. See the LICENSE file for more details.
-
 # Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
+# License
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/roelchristian/lexsearch/blob/master/LICENSE) file for more details.
+
+# Disclaimer
+This is a personal project. Any information that may be obtained from or through this project is provided to the users for informational purposes only. For more information, view the complete [disclaimer](https://github.com/roelchristian/lexsearch/blob/master/DISCLAIMER.MD).
