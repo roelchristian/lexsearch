@@ -43,28 +43,46 @@ def perform_search(search_type, search_term):
 def print_help_message():
     
     print(f"""
-    Welcome to Lex Search!
-    Version {__version__}
+Welcome to Lex Search!
+Version {__version__}
 
-    This command line utility allows you to search for Philippine laws and jurisprudence right from your terminal.
+This command line utility allows you to search for Philippine laws and jurisprudence right from your terminal.
 
-    The following commands are available:
+The following commands are available:
 
-    /q to quit
-    /? to display the help message
-    /c to clear the screen
-    /s to search for a statute or a decision
-        * This should be followed by the search term.
-        * Valid search terms start with "RA" or "GR"
-        * For example, to search for RA 7610, type "/s RA7610 or /s RA 7610"
-    /h to display the search history
-    /x to display the settings
-    /v to display the version number
+/q to quit
+/? to display the help message
+/c to clear the screen
+/s to search for a statute or a decision
+    * This should be followed by the search term.
+    * Valid search terms start with "RA" or "GR"
+    * For example, to search for RA 7610, type "/s RA7610 or /s RA 7610"
+/h to display the search history
+/x to display the settings
+/a to display information about Lex Search
+/v to display the version number
     """)
 
 def print_version():
     print(f"LexSearch version {__version__}")
     print(f"Python version {sys.version}\n")
-    # print disclaimer.md from root directory
-    with open("disclaimer.md", "r") as f:
-        print(f.read())
+
+
+def print_about_info():
+    print(f"""
+Lex Search is a free and open source tool for searching the laws
+and jurisprudence of the Philippines. For more information,
+visit the project's GitHub page:
+
+    https://github.com/roelchristian/lexsearch
+
+Lex Search is licensed under the MIT License. To view the project's
+license and disclaimer, visit:
+
+[LICENSE]
+https://github.com/roelchristian/lexsearch/blob/master/LICENSE
+
+[DISCLAIMER]
+https://github.com/roelchristian/lexsearch/blob/master/DISCLAIMER.MD
+
+    """)

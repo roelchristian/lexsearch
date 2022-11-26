@@ -1,7 +1,8 @@
 from src import cache_stylesheet_path, stylesheet_path
 from src.util.caching import copy_stylesheet
 from src.util.commands import (parse_search, perform_search,
-                               print_help_message, print_version)
+                               print_help_message, print_version,
+                               print_about_info)
 from src.util.history import show_history
 from src.util.settings import display_settings
 from src.util.term import clear_screen
@@ -38,6 +39,8 @@ def command_window():
             clear_screen()
         elif command == "/v":
             print_version()
+        elif command == "/a":
+            print_about_info()
         elif command == "/h":
             show_history()
         elif command.startswith("/s"):
