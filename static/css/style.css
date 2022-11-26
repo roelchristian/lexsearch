@@ -19,9 +19,10 @@ body{
 }
 
 h1{
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    text-align: center;
+    padding-bottom: 1.5rem;
 }
 
 h2{
