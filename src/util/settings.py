@@ -1,6 +1,7 @@
+import settings
 from src import __version__
 from src.util.term import clear_screen
-import settings
+
 
 def display_settings():
     print(f"Lex Search Version {__version__}")

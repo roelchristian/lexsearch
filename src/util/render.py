@@ -1,4 +1,4 @@
-from src import cache_dir, stylesheet_path
+from src import stylesheet_path
 from bs4 import BeautifulSoup
 
 # TODO - rewrite this function to use jinja2

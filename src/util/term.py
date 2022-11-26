@@ -1,5 +1,7 @@
-from src import this_os
 import os
+
+from src import this_os
+
 
 def clear_screen():
     print(this_os)

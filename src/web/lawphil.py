@@ -1,11 +1,14 @@
-import requests
-import re
+import collections
 import datetime as dt
+import re
+
+import requests
+from number_parser import parse_ordinal
+
+from src import __version__
 from src.util.history import log_search_history
 from src.web.req import sources
-from number_parser import parse_ordinal
-import collections
-from src import __version__
+
 
 def get_type(search_term):
 

@@ -1,8 +1,10 @@
-import os
-import json
 import gzip
-import settings
+import json
+import os
 import shutil
+
+import settings
+
 
 def get_cache_dir():
     '''

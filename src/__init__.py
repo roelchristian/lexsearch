@@ -1,5 +1,4 @@
 import os
-import shutil
 from src.util.caching import get_cache_dir, stylesheet_cache
 
 cache_dir = get_cache_dir()
